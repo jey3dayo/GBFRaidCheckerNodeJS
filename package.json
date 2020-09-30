@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "eslint": "eslint --fix .",
-    "start": "yarn node-babel app.js",
+    "start": "yarn babel-node app.js",
+    "generate": "yarn babel-node generate_bearer.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
