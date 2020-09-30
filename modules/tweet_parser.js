@@ -1,19 +1,21 @@
-module.exports = (data) => {
-    const regexp = new RegExp("([a-zA-Z0-9]{8}) :(参戦ID|Battle ID)\\n(参加者募集！|I need backup!)\\nLv(l )?([0-9]+) (.+)", "g");
-    const match  = regexp.exec(data.text);
+module.exports = data => {
+  const regexp = new RegExp(
+    '([a-zA-Z0-9]{8}) :(参戦ID|Battle ID)\\n(参加者募集！|I need backup!)\\nLv(l )?([0-9]+) (.+)',
+    'g',
+  );
+  const match = regexp.exec(data.text);
 
-    if (match === null) return null;
+  if (match === null) return null;
 
-    return {
-        id: match[1].trim(),
-        lv: match[5].trim(),
-        name: match[6].trim(),
-        timestamp_ms: data.timestamp_ms,
-        created_at: data.created_at,
-        tweetID: data.id
-    };
+  return {
+    id: match[1].trim(),
+    lv: match[5].trim(),
+    name: match[6].trim(),
+    timestamp_ms: data.timestamp_ms,
+    created_at: data.created_at,
+    tweetID: data.id,
+  };
 };
-
 
 /*
     [旧パース処理]
