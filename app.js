@@ -2,12 +2,34 @@ const Twitter = require('twitter');
 const tweetParser = require('./modules/tweet_parser.js');
 const makeKeyword = require('./modules/make_keyword.js');
 const Console = require('./modules/console.js');
-const consumerKey = require('./config/consumer_key.js');
 const raidDatas = require('./config/raid_datas.js');
 
+const {
+  APP_CONSUMER_KEY,
+  APP_CONSUMER_SECRET,
+  APP_BEARER_TOKEN,
+  USER_CONSUMER_KEY,
+  USER_CONSUMER_SECRET,
+  USER_ACCESS_TOKEN_KEY,
+  USER_ACCESS_TOKEN_SECRET,
+} = process.env;
+
+const appAuth = {
+  consumer_key: APP_CONSUMER_KEY,
+  consumer_secret: APP_CONSUMER_SECRET,
+  bearer_token: APP_BEARER_TOKEN,
+};
+
+const userAuth = {
+  consumer_key: USER_CONSUMER_KEY,
+  consumer_secret: USER_CONSUMER_SECRET,
+  access_token_key: USER_ACCESS_TOKEN_KEY,
+  access_token_secret: USER_ACCESS_TOKEN_SECRET,
+};
+
 /* Client */
-const userAuthClient = new Twitter(consumerKey.userAuth);
-const appAuthClient = new Twitter(consumerKey.appAuth || consumerKey.userAuth);
+const appAuthClient = new Twitter(appAuth);
+const userAuthClient = new Twitter(userAuth);
 
 /* Keyword Filter */
 const filterKeys = Object.keys(raidDatas.switch).filter(key => raidDatas.switch[key]);
@@ -70,7 +92,7 @@ setInterval(() => {
       appAuthClient.get(
         'search/tweets',
         { q: gbfSearch, count: 100, result_type: 'recent', include_entities: false },
-        (error, tweets, res) => {
+        (error, tweets, _) => {
           // console.timeEnd('fetchTime');
 
           if (Console.checkError(error, tweets.error) === false) {
